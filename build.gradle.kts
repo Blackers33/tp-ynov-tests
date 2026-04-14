@@ -43,15 +43,12 @@ tasks.withType<Test> {
 
 tasks.test {
     useJUnitPlatform()
-    finalizedBy(tasks.jacocoTestReport)
 
-    // Configuration pour les rapports de tests
     reports {
         html.required.set(true)
         junitXml.required.set(true)
     }
 
-    // Afficher les résultats des tests dans la console
     testLogging {
         events("passed", "skipped", "failed")
         exceptionFormat = org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL

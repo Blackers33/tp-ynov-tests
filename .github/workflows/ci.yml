@@ -1,4 +1,4 @@
-name: CI Simple
+name: CI
 
 on:
   push:
@@ -11,8 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -21,23 +20,15 @@ jobs:
           java-version: '21'
           cache: 'gradle'
 
-      - name: Build
-        run: ./gradlew build --no-daemon
+      - name: Grant execute permission
+        run: chmod +x gradlew
 
-      - name: Test
-        run: ./gradlew test --no-daemon
+      - name: Run tests
+        run: ./gradlew test --no-daemon --stacktrace
 
-      - name: Test Report
-        uses: dorny/test-reporter@v1
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2
         if: always()
         with:
-          name: Tests Results
-          path: '**/build/test-results/test/*.xml'
-          reporter: java-junit
-
-      - name: Upload Test Reports
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: test-reports
-          path: build/reports/tests/test/
+          files: |
+            build/test-results/**/*.xml
