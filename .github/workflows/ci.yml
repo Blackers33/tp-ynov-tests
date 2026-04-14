@@ -12,6 +12,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        env:
+          FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -19,6 +21,8 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
           cache: 'gradle'
+        env:
+          FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
       - name: Grant execute permission
         run: chmod +x gradlew
@@ -32,3 +36,7 @@ jobs:
         with:
           files: |
             build/test-results/**/*.xml
+          check_run_annotations: none
+        env:
+          FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+          
